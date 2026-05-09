@@ -119,11 +119,8 @@ class TestDataCleaner(unittest.TestCase):
         df = make_sample_df()
         cleaner = DataCleaner()
         result = cleaner.trim_strings(df, ["name"])
-        # Original mantiene espacios
         self.assertEqual(df.loc[0, "name"], " Alice ")
-        # Resultado sin espacios
         self.assertEqual(result.loc[0, "name"], "Alice")
-        # Columna city no cambia
         pdt.assert_series_equal(result["city"], df["city"])
 
 

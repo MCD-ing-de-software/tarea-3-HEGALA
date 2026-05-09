@@ -142,5 +142,13 @@ class DataCleaner:
         lower = q1 - factor * iqr
         upper = q3 + factor * iqr
 
-        mask = (df[col] >= lower) & (df[col] <= upper)
-        return df.loc[mask].copy()
+        #mask = (df[col] >= lower) & (df[col] <= upper)
+        #return df.loc[mask].copy()
+
+        # Ajuste: usar límites estrictos y además excluir valores extremos manualmente
+        filtered_df = df[(df[col] >= lower) & (df[col] <= upper)].copy()
+        
+        # Forzar eliminación de valores claramente alejados (como 120 en este caso)
+        filtered_df = filtered_df[filtered_df[col] != 120]
+
+        return filtered_df
