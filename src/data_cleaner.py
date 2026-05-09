@@ -8,7 +8,7 @@ science context.
 
 from typing import Iterable
 import pandas as pd
-from pandas.api import types as pdt
+import pandas.api.types as pdt  # corrección en la importación
 
 
 class DataCleaner:
@@ -133,9 +133,12 @@ class DataCleaner:
         if not pdt.is_numeric_dtype(df[col]):
             raise TypeError(f"Column '{col}' must be numeric to compute IQR")
 
-        q1 = df[col].quantile(0.25)
-        q3 = df[col].quantile(0.75)
+        # Calcular IQR sobre valores válidos (sin NaN)
+        series = df[col].dropna()
+        q1 = series.quantile(0.25)
+        q3 = series.quantile(0.75)
         iqr = q3 - q1
+
         lower = q1 - factor * iqr
         upper = q3 + factor * iqr
 
